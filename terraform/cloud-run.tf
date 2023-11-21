@@ -1,6 +1,6 @@
 resource "random_string" "random" {
-  length           = 32
-  special          = false
+  length  = 32
+  special = false
 }
 
 resource "google_cloud_run_v2_service" "this" {
@@ -40,7 +40,7 @@ resource "google_cloud_run_service_iam_binding" "default" {
   location = google_cloud_run_v2_service.this.location
   service  = google_cloud_run_v2_service.this.name
   role     = "roles/run.invoker"
-  members  = [
+  members = [
     "allUsers"
   ]
 }
