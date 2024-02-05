@@ -6,7 +6,7 @@ resource "random_string" "random" {
 resource "google_cloud_run_v2_service" "this" {
   provider     = google-beta
   depends_on   = [null_resource.image]
-  name         = "${var.app-name}-${local.version}"
+  name         = "${var.app-name}-${var.package_version}"
   location     = var.region
   launch_stage = "BETA"
 
@@ -17,7 +17,7 @@ resource "google_cloud_run_v2_service" "this" {
 
   template {
     containers {
-      image = "${var.region}-docker.pkg.dev/${var.project}/${var.app-name}/${var.app-name}:${local.version}"
+      image = "${var.region}-docker.pkg.dev/${var.project}/${var.app-name}/${var.app-name}:${var.package_version}"
       env {
         name  = "DATABASE_URL"
         value = "postgresql://${google_sql_user.db_user.name}:${random_password.password.result}@${google_sql_database_instance.this.private_ip_address}:5432/${google_sql_database.this.name}"
