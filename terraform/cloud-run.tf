@@ -6,12 +6,9 @@ resource "random_string" "random" {
 resource "google_cloud_run_v2_service" "this" {
   provider     = google-beta
   depends_on   = [null_resource.image]
-  name         = var.app-name
+  name         = "${var.app-name}-${local.version}"
   location     = var.region
   launch_stage = "BETA"
-
-  client_version = var.package_version
-
 
 
   template {
@@ -48,7 +45,7 @@ resource "google_cloud_run_service_iam_binding" "default" {
   location = google_cloud_run_v2_service.this.location
   service  = google_cloud_run_v2_service.this.name
   role     = "roles/run.invoker"
-  members = [
+  members  = [
     "allUsers"
   ]
 }
