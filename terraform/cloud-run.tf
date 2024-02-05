@@ -6,13 +6,12 @@ resource "random_string" "random" {
 resource "google_cloud_run_v2_service" "this" {
   provider     = google-beta
   depends_on   = [null_resource.image]
-  name         = "${var.app-name}-${var.package_version}"
+  name         = var.app-name
   location     = var.region
   launch_stage = "BETA"
 
-  labels = {
-    package_version = var.package_version
-  }
+  client_version = var.package_version
+
 
 
   template {
